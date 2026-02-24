@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--
+  UITLEG: Detailpagina voor één Pokemon. Toont alleen een "terug"-link en een container.
+  Het id van de Pokemon komt uit de URL (?id=25). detail.js vult de container met de
+  volledige kaart (template pokemonCardTemplate).
+
+  FLOW: Komt hier via index (knop View details) of via een favoriet-link → detail.js
+  leest id uit URL → laadt Pokemon → tekent volledige kaart met stats, types, favoriet-knop.
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Details</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="min-h-screen bg-white p-4 md:p-8 font-sans">
+    <div class="max-w-7xl mx-auto">
+        <div class="mb-8">
+            <a href="index.html" class="text-indigo-600 font-semibold hover:underline">← Back to search</a>
+        </div>
+
+        <div id="pokemonContainer" class="animate-fade-in"></div>
+    </div>
+
+    <template id="pokemonCardTemplate">
+        <div class="glass-card-pokemon group hover:shadow-2xl transition-all duration-300 relative overflow-hidden">
+            <div class="relative z-10">
+                <div class="flex justify-between items-start mb-8">
+                    <div>
+                        <span class="pokemon-name text-4xl font-black text-indigo-600 capitalize block mb-2 tracking-tight"></span>
+                        <span class="pokemon-id text-gray-400 text-sm font-bold tracking-wider">#<span class="id-value"></span></span>
+                    </div>
+                </div>
+                <div class="pokemon-image-container bg-indigo-50 rounded-3xl p-8 mb-6 border-2 border-indigo-100">
+                    <img class="pokemon-image w-full h-64 object-contain" src="" alt="" />
+                </div>
+                <div class="pokemon-types flex gap-2.5 mb-6 flex-wrap"></div>
+                <div class="pokemon-stats mb-6 p-5 bg-gray-50 rounded-2xl border-2 border-indigo-100"></div>
+                <div class="pokemon-details mb-6 p-5 bg-gray-50 rounded-2xl border-2 border-indigo-100">
+                    <h3 class="text-sm font-bold text-indigo-600 uppercase tracking-wider mb-3">Details</h3>
+                    <div class="pokemon-details-content text-gray-700"></div>
+                </div>
+                <div class="pokemon-type-matchups mb-6 p-5 bg-gray-50 rounded-2xl border-2 border-indigo-100">
+                    <h3 class="text-sm font-bold text-indigo-600 uppercase tracking-wider mb-3">Type matchups</h3>
+                    <div class="pokemon-type-matchups-content"></div>
+                </div>
+                <button type="button" class="favorite-btn" data-pokemon-id="">
+                    <span class="favorite-text-content">Add to Favorites</span>
+                </button>
+            </div>
+        </div>
+    </template>
+
+    <script src="js/api.js"></script>
+    <script src="js/favorites.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/detail.js"></script>
+</body>
+</html>

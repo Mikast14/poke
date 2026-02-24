@@ -1,3 +1,12 @@
+/*
+ * UITLEG: Alle styling van de app: lettertype, kaarten, knoppen, type-kleuren,
+ * animaties en scrollbar. Geen JavaScript. Tailwind wordt gebruikt voor veel
+ * layout; dit bestand voegt eigen kleuren en effecten toe.
+ *
+ * FLOW: Wordt op index.html en detail.html geladen. Bepaalt hoe zoekresultaat,
+ * detailkaart, favorieten-badges en knoppen eruitzien.
+ */
+
 /* Custom Font */
 body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;

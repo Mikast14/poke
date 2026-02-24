@@ -1,4 +1,13 @@
 <!DOCTYPE html>
+<!--
+  UITLEG: Startpagina van de app. Bevat het zoekformulier, de favorieten-sectie en
+  een plek waar het zoekresultaat (kleine kaart met knop "View details") getoond wordt.
+  De template searchResultTemplate wordt door JavaScript ingevuld.
+
+  FLOW: Gebruiker opent index → ziet zoekveld en favorieten. Zoekt een Pokemon →
+  resultaat verschijnt onderaan met link naar detail.html?id=... . Klik op "View details"
+  of op een favoriet-naam → gaat naar detailpagina.
+-->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -57,7 +66,7 @@
             </div>
         </div>
 
-        <!-- Pokemon Container -->
+        <!-- Pokemon Container (search result: small card + View details button) -->
         <div id="pokemonContainer" class="animate-fade-in">
             <div class="text-center text-gray-500 py-20">
                 <div class="inline-block p-8 bg-white rounded-3xl border-2 border-indigo-100 shadow-sm">
@@ -70,34 +79,18 @@
         </div>
     </div>
 
-    <!-- Template for Pokemon Card -->
-    <template id="pokemonCardTemplate">
-        <div class="glass-card-pokemon group hover:shadow-2xl transition-all duration-300 relative overflow-hidden">
-            <div class="relative z-10">
-                <!-- Header -->
-                <div class="flex justify-between items-start mb-8">
-                    <div>
-                        <span class="pokemon-name text-4xl font-black text-indigo-600 capitalize block mb-2 tracking-tight"></span>
-                        <span class="pokemon-id text-gray-400 text-sm font-bold tracking-wider">#<span class="id-value"></span></span>
-                    </div>
-                </div>
-                
-                <!-- Image Container -->
-                <div class="pokemon-image-container bg-indigo-50 rounded-3xl p-8 mb-6 border-2 border-indigo-100">
-                    <img class="pokemon-image w-full h-64 object-contain" src="" alt="" />
-                </div>
-                
-                <!-- Types -->
-                <div class="pokemon-types flex gap-2.5 mb-6 flex-wrap"></div>
-                
-                <!-- Stats -->
-                <div class="pokemon-stats mb-6 p-5 bg-gray-50 rounded-2xl border-2 border-indigo-100"></div>
-                
-                <!-- Favorite Button -->
-                <button type="button" class="favorite-btn" data-pokemon-id="">
-                    <span class="favorite-text-content">Add to Favorites</span>
-                </button>
+    <!-- Template for search result (small card with View details button) -->
+    <template id="searchResultTemplate">
+        <div class="glass-card-pokemon">
+            <div class="flex justify-between items-start mb-4">
+                <span class="search-result-name text-2xl font-black text-indigo-600 capitalize"></span>
+                <span class="search-result-id text-gray-400 text-sm font-bold">#<span class="id-value"></span></span>
             </div>
+            <div class="bg-indigo-50 rounded-2xl p-6 mb-4 border-2 border-indigo-100">
+                <img class="search-result-image w-full h-48 object-contain" src="" alt="" />
+            </div>
+            <div class="search-result-types flex gap-2 mb-6 flex-wrap"></div>
+            <a href="#" class="btn block text-center search-result-link">View details</a>
         </div>
     </template>
 

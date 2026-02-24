@@ -1,31 +1,44 @@
-// Main app – init and event handlers
+/*
+ * INDEXPAGINA (index.html) – alleen logica voor de zoekpagina.
+ *
+ * UITLEG: Luistert naar het zoekformulier, haalt de invoer op, toont laadstatus,
+ * roept de API aan en tekent het zoekresultaat of een fout. Bij laden wordt de
+ * favorietenlijst gevuld. handleRemoveFromFavoritesList is voor de knop "verwijder"
+ * bij een favoriet-badge op deze pagina.
+ *
+ * FLOW: Pagina laadt → favorietenlijst getekend. Gebruiker zoekt → loading →
+ * getPokemon → drawSearchResultCard. Klik op verwijderen bij een badge →
+ * handleRemoveFromFavoritesList → lijst opnieuw getekend.
+ */
 
-const form = document.getElementById('pokemonForm');
-const pokemonInput = document.getElementById('pokemonInput');
-const pokemonContainer = document.getElementById('pokemonContainer');
-const favoritesList = document.getElementById('favoritesList');
-const template = document.getElementById('pokemonCardTemplate');
+const form = document.getElementById("pokemonForm");
+const searchInput = document.getElementById("pokemonInput");
+const container = document.getElementById("pokemonContainer");
+const favoritesListEl = document.getElementById("favoritesList");
+const template = document.getElementById("searchResultTemplate");
 
-form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const v = pokemonInput.value.trim().toLowerCase();
-    if (!v) return;
+form.addEventListener("submit", function (event) {
+  event.preventDefault();
 
-    showLoading(pokemonContainer);
-    try {
-        const { pokemonData, speciesData, typeData } = await fetchPokemon(v);
-        renderPokemonCard(pokemonData, speciesData, typeData, template, pokemonContainer, isFavorite, handleToggleFavorite);
-    } catch (err) {
-        showError(pokemonContainer, err.message);
-    }
+  const zoekterm = searchInput.value.trim().toLowerCase();
+  if (zoekterm === "") return;
+
+  showLoading(container);
+  getPokemon(zoekterm)
+    .then(function (result) {
+      drawSearchResultCard(result.pokemonData, template, container);
+    })
+    .catch(function (err) {
+      showError(container, err.message);
+    });
 });
 
-function handleToggleFavorite(pokemonId, pokemonName) {
-    toggleFavorite(pokemonId, pokemonName);
-    updateFavoritesList(favoritesList, fetchPokemonById, handleToggleFavorite);
-    updateFavoriteButton(pokemonId);
+// Wordt aangeroepen als je op "verwijder" klikt bij een favoriet-badge op de indexpagina.
+function handleRemoveFromFavoritesList(pokemonId, pokemonName) {
+  toggleFavorite(pokemonId, pokemonName);
+  updateFavoritesList(favoritesListEl, getPokemonById, handleRemoveFromFavoritesList);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    updateFavoritesList(favoritesList, fetchPokemonById, handleToggleFavorite);
+document.addEventListener("DOMContentLoaded", function () {
+  updateFavoritesList(favoritesListEl, getPokemonById, handleRemoveFromFavoritesList);
 });
