@@ -8,12 +8,12 @@
  * worden gebruikt tijdens het ophalen van data.
  */
 
-// Tekent het kleine zoekresultaat-kaartje met link naar detail.html.
-function drawSearchResultCard(pokemonData, template, container) {
+// Bouwt één zoekresultaat-kaartje (DocumentFragment). Gebruikt door drawSearchResultCard en drawSearchResultsList.
+function createSearchResultCard(pokemonData, template) {
   const card = template.content.cloneNode(true);
 
   let imgUrl = pokemonData.sprites.front_default;
-  if (pokemonData.sprites.other && pokemonData.sprites.other["offi cial-artwork"]) {
+  if (pokemonData.sprites.other && pokemonData.sprites.other["official-artwork"]) {
     if (pokemonData.sprites.other["official-artwork"].front_default) {
       imgUrl = pokemonData.sprites.other["official-artwork"].front_default;
     }
@@ -36,8 +36,25 @@ function drawSearchResultCard(pokemonData, template, container) {
   const link = card.querySelector(".search-result-link");
   link.href = "detail.html?id=" + pokemonData.id;
 
+  return card;
+}
+
+// Tekent één zoekresultaat-kaartje in de container (maakt container leeg).
+function drawSearchResultCard(pokemonData, template, container) {
   container.innerHTML = "";
-  container.appendChild(card);
+  container.appendChild(createSearchResultCard(pokemonData, template));
+}
+
+// Tekent meerdere zoekresultaat-kaartjes in de container (partial search, meerdere resultaten).
+function drawSearchResultsList(results, template, container) {
+  container.innerHTML = "";
+  const wrapper = document.createElement("div");
+  wrapper.className = "search-results-grid";
+  for (let i = 0; i < results.length; i++) {
+    const pokemonData = results[i].pokemonData;
+    wrapper.appendChild(createSearchResultCard(pokemonData, template));
+  }
+  container.appendChild(wrapper);
 }
 
 // Tekent de volledige kaart op de detailpagina (stats, details, types, favoriet-knop).
@@ -190,7 +207,7 @@ function buildMatchupsHtml(typeData) {
       '<p class="mb-3"><span class="font-semibold text-gray-600">Counters</span> (strong vs): ' +
       strongStr +
       "</p>";
-  } else {
+  } else { 
     html += '<p class="mb-3"><span class="font-semibold text-gray-600">Counters</span>: —</p>';
   }
 
